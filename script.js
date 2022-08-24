@@ -10,8 +10,10 @@ function searchMovie(event){
 
     xhttp.onload = function () {
         responseDiv.innerHTML = xhttp.response};
-
-    xhttp.open('GET', `http://www.omdbapi.com/?apikey=aebbecd2&t=${title}&plot=full`);
+    xhttp.onerror = function(){
+        responseDiv.innerHTML = 'Onerror message'
+    }
+    xhttp.open('GET', `http://www.omdbapi.com/?apikey=aebbecd2&t=${title}&y=2300&plot=full`);
     xhttp.send()
 
 }
