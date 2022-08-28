@@ -1,21 +1,41 @@
 const submitBtn = document.getElementById('submit');
-const responseDiv = document.getElementById('response');
+const responseDisplay = document.getElementById('paginated-list');
 submitBtn.addEventListener('click', searchMovie);
 
-const title = 'rembo';
+const pageNumber = 1;
+
 
 function searchMovie(event){
+    const title = document.getElementById('name').value;
+    const type = document.querySelector('input[name="movie-type"]:checked').value;
+
+
     event.preventDefault();
     const xhttp = new XMLHttpRequest();
 
     xhttp.onload = function () {
-        responseDiv.innerHTML = xhttp.response};
+        displayMovies(xhttp.response)};
     xhttp.onerror = function(){
-        responseDiv.innerHTML = 'Onerror message'
+        responseDisplay.innerHTML = 'Onerror message'
     }
-    xhttp.open('GET', `http://www.omdbapi.com/?apikey=aebbecd2&t=${title}&y=2300&plot=full`);
+    xhttp.open('GET', `https://www.omdbapi.com/?apikey=aebbecd2&s=${title}&type=${type}&page=${pageNumber}`);
     xhttp.send()
 
 }
 
+function displayMovies(response){
+    const moviesResponse = JSON.parse(response).Search;
+    
+    moviesResponse.forEach((movie) => {
+        responseDisplay.innerHTML += `
+    <li>
+        <p>${movie.Title}</p>
+        <button id="${movie.imdbID}">Details</button>
+    </li>`
+    })
+    
+    console.log(moviesResponse);
 
+
+
+}

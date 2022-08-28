@@ -15,16 +15,23 @@
     <form action="" id="searchForm">
         <label for="name"> Enter film's title</label><br>
         <input type="text" name="name" id="name" placeholder="Title:"><br>
-        <input type="checkbox" id="movie" name="type" value="movie">
+        <input type="radio" id="movie" name="movie-type" value="movie" checked>
         <label for="movie"> movie</label><br>
-        <input type="checkbox" id="series" name="type" value="series">
+        <input type="radio" id="series" name="movie-type" value="series">
         <label for="series"> series</label><br>
-        <input type="checkbox" id="episode" name="type" value="episode">
+        <input type="radio" id="episode" name="movie-type" value="episode">
         <label for="episode"> episode</label><br><br>
         <button id="submit" type="submit">Search</button>
     </form>
 
     <div id="response">
+
+        <ul id="paginated-list">
+            <li>
+                <p>Name</p>
+                <button>Details</button>
+            </li>
+        </ul>
 
     </div>
 
