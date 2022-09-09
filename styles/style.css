@@ -2,7 +2,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-#pagination-container{
+.pagination-container{
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -18,4 +18,8 @@
 
 footer{
     height: 50px;
+}
+
+.disabled{
+    display: none;
 }

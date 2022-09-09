@@ -34,12 +34,20 @@
             </li>
         </ul>
 
-        <nav id="pagination-container">
+        <nav id="pagination-container" class="pagination-container disabled">
+            
+            <button id="first-page">Start</button>
             <button id="previous-btn">Prev</button>
             <div id="pagination-numbers">
-                
+                <div id="firstNumbers"></div>
+                <div>
+                    <p id="otherNumbers">. . .</p>
+                </div>
+                <div id="lastNumbers"></div>
             </div>
             <button id="next-btn">Next</button>
+            <button id="last-page">End</button>
+
 
         </nav>
 
