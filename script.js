@@ -126,6 +126,7 @@ function showDetails(evt) {
         let filmId = evt.target.id;
         let filmToShow = moviesList.find(film => film.imdbID == filmId)
         buildModal(filmToShow)
+        console.log(filmToShow)
     }
 }
 
@@ -136,8 +137,24 @@ const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
-function buildModal () {
+function buildModal (film) {
     modal.style.display = "block";
+    let modalInner = document.getElementById('modalInner');
+    modalInner.innerHTML = `
+    <div class="poster">
+        <img src="${film.Poster}" alt="">
+    </div>
+    <div class="title">
+        <p>${film.Title}</p>
+    </div>
+    <div class="type">
+        <p>${film.Type}</p>
+    </div>
+    <div class="year">
+        <p>${film.Year}</p>
+    </div>
+`
+    
 }
 
 span.onclick = function () {
