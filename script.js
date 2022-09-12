@@ -4,12 +4,11 @@ const submitBtn = document.getElementById('submit');
 const paginatedList = document.getElementById('paginated-list');
 let paginationNumbers = document.getElementById('pagination-numbers');
 let paginationContainer = document.getElementById('pagination-container');
-let firstNumbers = document.getElementById('firstNumbers');
-let lastNumbers = document.getElementById('lastNumbers');
 let otherNumbers = document.getElementById('otherNumbers');
 let moviesList = '';
 let totalPages = 1;
 const itemsPerPage = 10;
+
 
 
 submitBtn.addEventListener('click', searchMovies);
@@ -17,6 +16,7 @@ paginatedList.addEventListener('click', showDetails);
 
 function searchMovies(event) {
     event.preventDefault();
+    currentPage = 1;
     searchMovie()
 }
 
@@ -30,14 +30,13 @@ function searchMovie() {
 
     xhttp.onload = function () {
         displayMovies(xhttp.response)
+
     };
     xhttp.onerror = function () {
         paginatedList.innerHTML = 'Sorry, we could not find anything. Please, check out your request'
     }
     xhttp.open('GET', `https://www.omdbapi.com/?apikey=aebbecd2&s=${title}&type=${type}&page=${pageNumber}`);
     xhttp.send();
-
-
 
 }
 
@@ -63,29 +62,25 @@ function displayMovies(response) {
 }
 
 function createPagination(pagesNumber) {
-    paginationContainer.classList.remove('disabled');
+    paginationContainer.classList.remove('invisible');
+    let previousBtn = document.getElementById('previous-btn');
+    let nextBtn = document.getElementById('next-btn');
     firstNumbers.innerHTML = '';
     lastNumbers.innerHTML = '';
 
-    for (let i = currentPage; i <= pagesNumber; i++) {
-        // if((i - pagesNumber) == 1){
-        //     otherNumbers.classList.add('disabled')
-        // }
 
-        if (i < currentPage + 3) {
-            let paginationBtn = document.createElement('button');
-            paginationBtn.id = i;
-            paginationBtn.innerHTML = i;
-            firstNumbers.appendChild(paginationBtn)
-        } else if (i > pagesNumber - 3) {
-            let paginationBtn = document.createElement('button');
-            paginationBtn.id = i;
-            paginationBtn.innerHTML = i;
-            lastNumbers.appendChild(paginationBtn)
-        }
+    for (let i = currentPage; i < currentPage + 5 && i <= pagesNumber; i++) {
+
+        let paginationStart = document.createElement('button');
+        paginationStart.id = i;
+        paginationStart.innerHTML = i;
+        firstNumbers.appendChild(paginationStart)
     }
-}
 
+    currentPage <= pagesNumber - 6 ? otherNumbers.classList.remove('invisible') : otherNumbers.classList.add('invisible');
+    currentPage == 1 ? previousBtn.disabled = true : previousBtn.disabled = false;
+    currentPage == pagesNumber ? nextBtn.disabled = true : nextBtn.disabled = false;
+}
 
 
 document.getElementById('previous-btn').addEventListener('click', previous)
@@ -117,7 +112,7 @@ function goToNumber(evt) {
     let btnId = parseInt(evt.target.id);
     currentPage = btnId;
     searchMovie()
-    console.log(btnId)
+
 }
 
 
@@ -137,7 +132,7 @@ const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
-function buildModal (film) {
+function buildModal(film) {
     modal.style.display = "block";
     let modalInner = document.getElementById('modalInner');
     modalInner.innerHTML = `
@@ -154,7 +149,7 @@ function buildModal (film) {
         <p>${film.Year}</p>
     </div>
 `
-    
+
 }
 
 span.onclick = function () {
