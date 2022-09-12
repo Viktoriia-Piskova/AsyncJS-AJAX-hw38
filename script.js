@@ -5,6 +5,7 @@ const paginatedList = document.getElementById('paginated-list');
 let paginationNumbers = document.getElementById('pagination-numbers');
 let paginationContainer = document.getElementById('pagination-container');
 let otherNumbers = document.getElementById('otherNumbers');
+let pagesNumber = 0;
 let moviesList = '';
 let totalPages = 1;
 const itemsPerPage = 10;
@@ -17,6 +18,8 @@ paginatedList.addEventListener('click', showDetails);
 function searchMovies(event) {
     event.preventDefault();
     currentPage = 1;
+    pagesNumber = 0;
+    paginationContainer.classList.add('invisible');
     searchMovie()
 }
 
@@ -33,10 +36,11 @@ function searchMovie() {
 
     };
     xhttp.onerror = function () {
-        paginatedList.innerHTML = 'Sorry, we could not find anything. Please, check out your request'
+        paginatedList.innerHTML = 'Sorry, something went wrong. Please refresh the page and try again'
     }
     xhttp.open('GET', `https://www.omdbapi.com/?apikey=aebbecd2&s=${title}&type=${type}&page=${pageNumber}`);
     xhttp.send();
+
 
 }
 
@@ -45,19 +49,22 @@ function displayMovies(response) {
     const parsedResponse = JSON.parse(response);
     const moviesResponse = parsedResponse.Search;
 
-    moviesResponse.forEach((movie) => {
-        paginatedList.innerHTML += `
+    try {
+        moviesResponse.forEach((movie) => {
+            paginatedList.innerHTML += `
     <li>
         <p>${movie.Title}</p>
         <button id="${movie.imdbID}">Details</button>
     </li>`
-    })
+        })
 
-    moviesList = moviesResponse;
+        moviesList = moviesResponse;
 
-    pagesNumber = Math.ceil(parseInt(parsedResponse.totalResults) / itemsPerPage);
-    createPagination(pagesNumber);
-
+        pagesNumber = Math.ceil(parseInt(parsedResponse.totalResults) / itemsPerPage);
+        createPagination(pagesNumber);
+    } catch {
+        paginatedList.innerHTML = "Sorry, we couldn't find any movie. Please, check your input and try again" 
+    }
 
 }
 
@@ -66,7 +73,6 @@ function createPagination(pagesNumber) {
     let previousBtn = document.getElementById('previous-btn');
     let nextBtn = document.getElementById('next-btn');
     firstNumbers.innerHTML = '';
-    lastNumbers.innerHTML = '';
 
 
     for (let i = currentPage; i < currentPage + 5 && i <= pagesNumber; i++) {
@@ -130,7 +136,7 @@ function showDetails(evt) {
 
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
-var span = document.getElementsByClassName("close")[0];
+const span = document.getElementsByClassName("close")[0];
 
 function buildModal(film) {
     modal.style.display = "block";
